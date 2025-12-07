@@ -160,3 +160,13 @@ During this project, AI was used **only as a supportive tool**, not for generati
     transform: rotate() behavior
     how rotation affects positioning
 
+
+---
+
+# Demo
+
+You can try the live version of the project here:
+
+**[https://emektarkubra.github.io/Seesaw_Simulation/](https://emektarkubra.github.io/Seesaw_Simulation/)**
+
+---

@@ -18,6 +18,8 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 
@@ -27,6 +29,7 @@ body {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
     /* background-color: #ecf0f1; */
     position: relative;
+    max-width: 100%;
 }
 
 .seesaw {
@@ -165,4 +168,57 @@ body {
 .reset-btn:active {
     transform: translateY(0px);
     box-shadow: 0 3px 10px rgba(0, 102, 255, 0.25);
+}
+
+
+
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        padding: 20px 10px;
+    }
+
+    .area {
+        width: 100%;
+        height: 380px;
+    }
+
+    .seesaw {
+        width: 100%;
+        height: 140px;
+    }
+
+    .plank {
+        width: 100%;
+    }
+
+    .values-box {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .box {
+        width: calc(50% - 10px);
+    }
+
+    .reset-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .values-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .box {
+        width: 100%;
+    }
+
+    .area {
+        height: 320px;
+    }
 }
