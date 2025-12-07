@@ -81,6 +81,9 @@ body {
     background: transparent;
     cursor: pointer;
     pointer-events: auto;
+    /* transform-origin: 50% 50%;  */
+
+    
 }
 
 

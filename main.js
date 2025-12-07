@@ -52,6 +52,8 @@ const updatePlankRotation = () => {
         let angle = (right-left) / 50
         angle = Math.max(-30, Math.min(30,angle))
 
-        plank.style.transform = `translateX(-50%) rotate(${angle}deg`
+        plank.style.transform = `translateX(-50%) rotate(${angle}deg)`
+        clickArea.style.transform = `rotate(${angle}deg)`;
+
     })
 }
