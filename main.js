@@ -8,6 +8,7 @@ const nextWeightElement = document.querySelector(".next-weight")
 const rightWeightElement = document.querySelector(".right-weight")
 const tiltAngleElement = document.querySelector(".tilt-angle")
 const resetButton = document.querySelector(".reset-btn")
+const ballInfoElement = document.querySelector(".ball-info-box")
 
 const colors = {
     1: "#e86673",
@@ -64,6 +65,7 @@ clickArea.addEventListener("click", (e) => {
     nextWeightElement.textContent = `${nextBallWeight} kg`;
 
     updatePlankRotation();
+    ballInfoAdd(objects)
 });
 
 
@@ -123,24 +125,6 @@ window.addEventListener("load", () => {
     updateClickAreaBox();
 });
 
-// reset button click
-resetButton.addEventListener("click", (e) => {
-    console.log(e)
-    objects = [];
-
-    const balls = plank.querySelectorAll(".ball");
-    balls.forEach(ball => ball.remove());
-
-    plank.style.transform = `translateX(-50%) rotate(0deg)`;
-
-    leftWeightElement.textContent = "0 kg";
-    rightWeightElement.textContent = "0 kg";
-    tiltAngleElement.textContent = "0°";
-
-    nextBallWeight = Math.floor(Math.random() * 10) + 1;
-    nextWeightElement.textContent = `${nextBallWeight} kg`;
-
-})
 
 
 // preview ball
@@ -151,7 +135,7 @@ const getBallSizeForWeight = (weight) => minBallSize + ((weight - 1) / 9) * (max
 
 const updatePreviewBall = (clientX) => {
     const clickValues = clickArea.getBoundingClientRect();
-    console.log(clickValues)
+
     const plankWidth = plank.offsetWidth;
 
     let relativeX = clientX - clickValues.left;
@@ -186,3 +170,54 @@ clickArea.addEventListener("mouseleave", () => {
         previewBall = null;
     }
 });
+
+
+
+// ball descriptions
+const ballInfoAdd = (objects) => {
+    console.log(objects)
+
+    ballInfoElement.style.background = "#ffffff";
+    ballInfoElement.style.padding = "10px";
+    ballInfoElement.style.marginTop = "20px";
+    ballInfoElement.style.maxHeight = "100px";
+    ballInfoElement.style.overflowY = "auto";
+
+
+    ballInfoElement.innerHTML = "";
+
+    objects.forEach((object) => {
+        const infoBox = document.createElement("div");
+        infoBox.className = "ball-info-text";
+
+        const side = object.distance < 0 ? "left" : "right";
+        const fromCenter = Math.abs(object.distance);
+
+        infoBox.textContent = `📦 ${object.weight}kg dropped on ${side} side at ${fromCenter.toFixed(2)}px from center`;
+        ballInfoElement.appendChild(infoBox);
+    });
+}
+
+
+
+// reset button click
+resetButton.addEventListener("click", (e) => {
+    console.log(e)
+    objects = [];
+
+    const balls = plank.querySelectorAll(".ball");
+    balls.forEach(ball => ball.remove());
+
+    plank.style.transform = `translateX(-50%) rotate(0deg)`;
+
+    leftWeightElement.textContent = "0 kg";
+    rightWeightElement.textContent = "0 kg";
+    tiltAngleElement.textContent = "0°";
+
+    nextBallWeight = Math.floor(Math.random() * 10) + 1;
+    nextWeightElement.textContent = `${nextBallWeight} kg`;
+
+    ballInfoElement.innerHTML = "";
+    ballInfoElement.removeAttribute("style");
+
+})
