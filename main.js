@@ -1,10 +1,12 @@
-const plank = document.querySelector('.plank');
-const clickArea = document.querySelector('.click-area');
+const plank = document.querySelector(".plank");
+const clickArea = document.querySelector(".click-area");
+const area = document.querySelector(".area");
 
 
 const objects = [];
 
-clickArea.addEventListener('click', e => {
+
+clickArea.addEventListener("click", (e) => {
     const values = plank.getBoundingClientRect();
 
     const clickX = e.clientX - values.left;
@@ -12,7 +14,6 @@ clickArea.addEventListener('click', e => {
 
     console.log(clickX);
     console.log(distance);
-
 
     const weight = Math.floor(Math.random() * 10) + 1;
 
@@ -25,35 +26,57 @@ clickArea.addEventListener('click', e => {
 
     objects.push({
         x: clickX,
-        distance: distance,
-        weight
+        distance,
+        weight,
     });
 
     console.log(objects);
 
-    updatePlankRotation()
+    updatePlankRotation();
 });
 
 
 
 const updatePlankRotation = () => {
-    let left = 0;
-    let right = 0;
+    let leftTorque = 0;
+    let rightTorque = 0;
 
     objects.forEach((object) => {
-       let tork = object.weight * Math.abs(object.distance)
+        const torque = object.weight * Math.abs(object.distance);
 
         if (object.distance < 0) {
-            left += tork
+            leftTorque += torque;
         } else {
-            right += tork
+            rightTorque += torque;
         }
+    });
 
-        let angle = (right-left) / 50
-        angle = Math.max(-30, Math.min(30,angle))
+    let angle = (rightTorque - leftTorque) / 50;
+    angle = Math.max(-30, Math.min(30, angle));
 
-        plank.style.transform = `translateX(-50%) rotate(${angle}deg)`
-        clickArea.style.transform = `rotate(${angle}deg)`;
+    plank.style.transform = `translateX(-50%) rotate(${angle}deg)`;
 
-    })
-}
+    updateClickAreaBox();
+};
+
+
+
+const updateClickAreaBox = () => {
+    const areaValues = area.getBoundingClientRect();
+    const plankValues = plank.getBoundingClientRect();
+
+    const left = plankValues.left - areaValues.left;
+    const top = 0;
+    const width = plankValues.width;
+    const height = plankValues.top - areaValues.top;
+
+    clickArea.style.left = left + "px";
+    clickArea.style.top = top + "px";
+    clickArea.style.width = width + "px";
+    clickArea.style.height = height + "px";
+};
+
+
+window.addEventListener("load", () => {
+    updateClickAreaBox();
+});
