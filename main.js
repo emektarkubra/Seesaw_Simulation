@@ -3,8 +3,17 @@ const clickArea = document.querySelector(".click-area");
 const area = document.querySelector(".area");
 
 
+const leftWeightElement = document.querySelector(".left-weight")
+const nextWeightElement = document.querySelector(".next-weight")
+const rightWeightElement = document.querySelector(".right-weight")
+const tiltAngleElement = document.querySelector(".tilt-angle")
+
+
 const objects = [];
 
+
+let nextBallWeight = Math.floor(Math.random() * 10) + 1;
+nextWeightElement.textContent = `${nextBallWeight} kg`;
 
 clickArea.addEventListener("click", (e) => {
     const values = plank.getBoundingClientRect();
@@ -12,10 +21,7 @@ clickArea.addEventListener("click", (e) => {
     const clickX = e.clientX - values.left;
     const distance = clickX - values.width / 2;
 
-    console.log(clickX);
-    console.log(distance);
-
-    const weight = Math.floor(Math.random() * 10) + 1;
+    const weight = nextBallWeight;
 
     const ball = document.createElement("div");
     ball.className = "ball";
@@ -30,24 +36,30 @@ clickArea.addEventListener("click", (e) => {
         weight,
     });
 
-    console.log(objects);
+    nextBallWeight = Math.floor(Math.random() * 10) + 1;
+    nextWeightElement.textContent = `${nextBallWeight} kg`;
 
     updatePlankRotation();
 });
 
 
 
+
 const updatePlankRotation = () => {
     let leftTorque = 0;
     let rightTorque = 0;
+    let leftWeight = 0;
+    let rightWeight = 0;
 
     objects.forEach((object) => {
         const torque = object.weight * Math.abs(object.distance);
 
         if (object.distance < 0) {
             leftTorque += torque;
+            leftWeight += object.weight
         } else {
             rightTorque += torque;
+            rightWeight += object.weight
         }
     });
 
@@ -57,6 +69,12 @@ const updatePlankRotation = () => {
     plank.style.transform = `translateX(-50%) rotate(${angle}deg)`;
 
     updateClickAreaBox();
+
+    leftWeightElement.textContent = `${leftWeight} kg`;
+    rightWeightElement.textContent = `${rightWeight} kg`;
+
+    tiltAngleElement.textContent = `${angle.toFixed(1)}°`;
+
 };
 
 
