@@ -7,12 +7,25 @@ const leftWeightElement = document.querySelector(".left-weight")
 const nextWeightElement = document.querySelector(".next-weight")
 const rightWeightElement = document.querySelector(".right-weight")
 const tiltAngleElement = document.querySelector(".tilt-angle")
-
 const resetButton = document.querySelector(".reset-btn")
 
 
 let objects = [];
+const minBallSize = 18;
+const maxBallSize = 60;
 
+const colors = {
+    1: "#e86673",
+    2: "#e07a42",
+    3: "#e6c335",
+    4: "#9ec73b",
+    5: "#33d6f2",
+    6: "#4f8fe0",
+    7: "#7b47c7",
+    8: "#d44a98",
+    9: "#ff4bd9",
+    10: "#e0a43b"
+};
 
 let nextBallWeight = Math.floor(Math.random() * 10) + 1;
 nextWeightElement.textContent = `${nextBallWeight} kg`;
@@ -25,11 +38,19 @@ clickArea.addEventListener("click", (e) => {
 
     const weight = nextBallWeight;
 
+    const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
+
+
     const ball = document.createElement("div");
     ball.className = "ball";
     ball.textContent = weight;
 
+    ball.style.width = `${ballSize}px`;
+    ball.style.height = `${ballSize}px`;
+
     ball.style.left = `${clickX - 10}px`;
+    ball.style.background = colors[weight];
+
     plank.appendChild(ball);
 
     objects.push({
