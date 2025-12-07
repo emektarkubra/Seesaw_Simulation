@@ -1,8 +1,10 @@
 const plank = document.querySelector('.plank');
+const clickArea = document.querySelector('.click-area');
+
 
 const objects = []; 
 
-plank.addEventListener('click', e => {
+clickArea.addEventListener('click', e => {
     const values = plank.getBoundingClientRect();
 
     const clickX = e.clientX - values.left;      
