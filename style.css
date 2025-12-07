@@ -1,5 +1,53 @@
 * {
     box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid red;
+}
+
+.area {
+    width: 600px;
+    height: 400px;
+    position: relative;
+    border: 1px solid blue;
+    background-color: #ecf0f1;
+}
+
+.seesaw {
+    position: absolute;
+    width: 400px;
+    height: 150px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -20%);
+    pointer-events: none;
+}
+
+.pivot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 40px solid #555;
+}
+
+.plank {
+    width: 400px;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    height: 16px;
+    background: #34495e;
+    cursor: pointer;
 }
