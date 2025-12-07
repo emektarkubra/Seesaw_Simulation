@@ -46,9 +46,23 @@ body {
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    
+
     height: 16px;
     background: #34495e;
     cursor: pointer;
     pointer-events: auto;
+}
+
+.ball {
+    position: absolute;
+    bottom: 16px;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

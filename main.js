@@ -1,10 +1,31 @@
 const plank = document.querySelector('.plank');
 
+const objects = []; 
+
 plank.addEventListener('click', e => {
     const values = plank.getBoundingClientRect();
-    console.log(values)
 
-    const distance = (e.clientX - values.left) - values.width / 2;
+    const clickX = e.clientX - values.left;      
+    const distance = clickX - values.width / 2;
 
+    console.log(clickX);
     console.log(distance);
+
+
+    const weight = Math.floor(Math.random() * 10) + 1;
+
+    const ball = document.createElement("div");
+    ball.className = "ball";
+    ball.textContent = weight;
+
+    ball.style.left = `${clickX - 10}px`; 
+    plank.appendChild(ball);
+
+    objects.push({
+        x: clickX,
+        distance: distance,
+        weight
+    });
+
+    console.log(objects);
 });
