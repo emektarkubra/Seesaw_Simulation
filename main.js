@@ -42,13 +42,17 @@ clickArea.addEventListener("click", (e) => {
     const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
 
     const ball = document.createElement("div");
-    ball.className = "ball";
+    ball.className = "ball ball--animation";
     ball.textContent = weight;
 
     ball.style.width = `${ballSize}px`;
     ball.style.height = `${ballSize}px`;
     ball.style.left = `${clickX - ballSize / 2}px`;
     ball.style.background = colors[weight];
+
+    ball.addEventListener("animationend", () => {
+        ball.classList.remove("ball--animation");
+    });
 
     plank.appendChild(ball);
 
@@ -67,6 +71,7 @@ clickArea.addEventListener("click", (e) => {
     updatePlankRotation();
     ballInfoAdd(objects);
 });
+
 
 
 // plank rotation update
