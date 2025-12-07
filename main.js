@@ -61,8 +61,8 @@ clickArea.addEventListener("click", (e) => {
     nextBallWeight = Math.floor(Math.random() * 10) + 1;
     nextWeightElement.textContent = `${nextBallWeight} kg`;
 
-    localStorage.setItem("seesaw-objects", JSON.stringify(objects));
-    localStorage.setItem("seesaw-next-weight", nextBallWeight);
+    localStorage.setItem("objects", JSON.stringify(objects));
+    localStorage.setItem("next-weight", nextBallWeight);
 
     updatePlankRotation();
     ballInfoAdd(objects);
@@ -123,8 +123,8 @@ const updateClickAreaBox = () => {
 window.addEventListener("load", () => {
     updateClickAreaBox();
 
-    const savedObjects = JSON.parse(localStorage.getItem("seesaw-objects"));
-    const savedNext = localStorage.getItem("seesaw-next-weight");
+    const savedObjects = JSON.parse(localStorage.getItem("objects"));
+    const savedNext = localStorage.getItem("next-weight");
 
     if (savedObjects && Array.isArray(savedObjects)) {
         objects = savedObjects;
@@ -227,8 +227,8 @@ resetButton.addEventListener("click", () => {
     rightWeightElement.textContent = "0 kg";
     tiltAngleElement.textContent = "0°";
 
-    localStorage.removeItem("seesaw-objects");
-    localStorage.removeItem("seesaw-next-weight");
+    localStorage.removeItem("objects");
+    localStorage.removeItem("next-weight");
 
     nextBallWeight = Math.floor(Math.random() * 10) + 1;
     nextWeightElement.textContent = `${nextBallWeight} kg`;
