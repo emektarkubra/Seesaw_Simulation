@@ -163,8 +163,7 @@ window.addEventListener("load", () => {
 // preview ball
 let previewBall = null;
 
-const getBallSizeForWeight = (weight) =>
-    minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
+const getBallSizeForWeight = (weight) => minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
 
 const updatePreviewBall = (clientX) => {
     const clickValues = clickArea.getBoundingClientRect();

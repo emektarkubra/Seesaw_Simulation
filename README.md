@@ -144,10 +144,6 @@ This approach works well, but it can cause small pixel-level shifts in certain c
 * The user can still click accurately
 * However, the area does not perfectly represent the plank’s true 3D tilt (a simplified 2D approximation)
 
-
-Aşağıda README’ye **ayrı bir başlık altında** ekleyebileceğin, profesyonel ve dürüst bir açıklama veriyorum.
-Hem sade hem de mülakat açısından doğru bir ton içerir.
-
 ---
 
 # Use of AI Assistance
@@ -159,7 +155,6 @@ During this project, AI was used **only as a supportive tool**, not for generati
 
     transform: rotate() behavior
     how rotation affects positioning
-
 
 ---
 
