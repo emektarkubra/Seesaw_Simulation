@@ -57,8 +57,8 @@ body {
     cursor: pointer;
     pointer-events: auto;
     transform: translateX(-50%);
-    transform-origin: 50% 50%;
     transition: transform 0.4s ease-out;
+    transform-origin: 50% 50%;
 }
 
 .ball {
@@ -75,10 +75,16 @@ body {
     justify-content: center;
 }
 
+.preview-ball {
+    opacity: 0.7;
+}
+
+
 .click-area {
     position: absolute;
     background: transparent;
     pointer-events: auto;
+    cursor: pointer;
 }
 
 

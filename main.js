@@ -9,11 +9,6 @@ const rightWeightElement = document.querySelector(".right-weight")
 const tiltAngleElement = document.querySelector(".tilt-angle")
 const resetButton = document.querySelector(".reset-btn")
 
-
-let objects = [];
-const minBallSize = 18;
-const maxBallSize = 60;
-
 const colors = {
     1: "#e86673",
     2: "#e07a42",
@@ -27,9 +22,15 @@ const colors = {
     10: "#e0a43b"
 };
 
+let objects = [];
+const minBallSize = 18;
+const maxBallSize = 60;
+
+
 let nextBallWeight = Math.floor(Math.random() * 10) + 1;
 nextWeightElement.textContent = `${nextBallWeight} kg`;
 
+// click event
 clickArea.addEventListener("click", (e) => {
     const values = plank.getBoundingClientRect();
 
@@ -67,7 +68,7 @@ clickArea.addEventListener("click", (e) => {
 
 
 
-
+// update plank rotation
 const updatePlankRotation = () => {
     let leftTorque = 0;
     let rightTorque = 0;
@@ -101,7 +102,7 @@ const updatePlankRotation = () => {
 };
 
 
-
+// click area box
 const updateClickAreaBox = () => {
     const areaValues = area.getBoundingClientRect();
     const plankValues = plank.getBoundingClientRect();
@@ -122,7 +123,7 @@ window.addEventListener("load", () => {
     updateClickAreaBox();
 });
 
-
+// reset button click
 resetButton.addEventListener("click", (e) => {
     console.log(e)
     objects = [];
@@ -140,3 +141,48 @@ resetButton.addEventListener("click", (e) => {
     nextWeightElement.textContent = `${nextBallWeight} kg`;
 
 })
+
+
+// preview ball
+let previewBall = null;
+
+const getBallSizeForWeight = (weight) => minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
+
+
+const updatePreviewBall = (clientX) => {
+    const clickValues = clickArea.getBoundingClientRect();
+    console.log(clickValues)
+    const plankWidth = plank.offsetWidth;
+
+    let relativeX = clientX - clickValues.left;
+    relativeX = Math.max(0, Math.min(clickValues.width, relativeX));
+
+    const weight = nextBallWeight;
+    const ballSize = getBallSizeForWeight(weight);
+
+    const xOnPlank = (relativeX / clickValues.width) * plankWidth;
+
+    if (!previewBall) {
+        previewBall = document.createElement("div");
+        previewBall.className = "ball preview-ball";
+        plank.appendChild(previewBall);
+    }
+
+    previewBall.textContent = weight;
+    previewBall.style.width = `${ballSize}px`;
+    previewBall.style.height = `${ballSize}px`;
+    previewBall.style.left = `${xOnPlank - ballSize / 2}px`;
+    previewBall.style.background = colors[weight];
+};
+
+
+clickArea.addEventListener("mousemove", (e) => {
+    updatePreviewBall(e.clientX);
+});
+
+clickArea.addEventListener("mouseleave", () => {
+    if (previewBall) {
+        previewBall.remove();
+        previewBall = null;
+    }
+});
