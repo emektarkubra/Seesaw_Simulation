@@ -8,8 +8,10 @@ const nextWeightElement = document.querySelector(".next-weight")
 const rightWeightElement = document.querySelector(".right-weight")
 const tiltAngleElement = document.querySelector(".tilt-angle")
 
+const resetButton = document.querySelector(".reset-btn")
 
-const objects = [];
+
+let objects = [];
 
 
 let nextBallWeight = Math.floor(Math.random() * 10) + 1;
@@ -98,3 +100,22 @@ const updateClickAreaBox = () => {
 window.addEventListener("load", () => {
     updateClickAreaBox();
 });
+
+
+resetButton.addEventListener("click", (e) => {
+    console.log(e)
+    objects = [];
+
+    const balls = plank.querySelectorAll(".ball");
+    balls.forEach(ball => ball.remove());
+
+    plank.style.transform = `translateX(-50%) rotate(0deg)`;
+
+    leftWeightElement.textContent = "0 kg";
+    rightWeightElement.textContent = "0 kg";
+    tiltAngleElement.textContent = "0°";
+
+    nextBallWeight = Math.floor(Math.random() * 10) + 1;
+    nextWeightElement.textContent = `${nextBallWeight} kg`;
+
+})
