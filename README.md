@@ -132,10 +132,6 @@ to ensure long-term maintainability and clarity.
 
 ---
 
-Aşağıda **sadece 5. maddeyi** İngilizce ve temiz Markdown formatında veriyorum:
-
----
-
 # Trade-off
 
 ### **The Click Area is recalculated every time the plank tilts**
@@ -145,8 +141,8 @@ This approach works well, but it can cause small pixel-level shifts in certain c
 
 **Trade-off:**
 
-* ✔ The user can still click accurately
-* ✘ However, the area does not perfectly represent the plank’s true 3D tilt (a simplified 2D approximation)
+* The user can still click accurately
+* However, the area does not perfectly represent the plank’s true 3D tilt (a simplified 2D approximation)
 
 
 Aşağıda README’ye **ayrı bir başlık altında** ekleyebileceğin, profesyonel ve dürüst bir açıklama veriyorum.
