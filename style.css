@@ -50,4 +50,5 @@ body {
     height: 16px;
     background: #34495e;
     cursor: pointer;
+    pointer-events: auto;
 }
