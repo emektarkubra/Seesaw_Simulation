@@ -116,15 +116,6 @@ body {
     opacity: 0.7;
 }
 
-
-.click-area {
-    position: absolute;
-    background: transparent;
-    pointer-events: auto;
-    cursor: pointer;
-}
-
-
 /* cards */
 .box {
     display: flex;
