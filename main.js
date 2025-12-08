@@ -1,13 +1,12 @@
-const plank = document.querySelector(".plank");
-const clickArea = document.querySelector(".click-area");
-const area = document.querySelector(".area");
+const plank = document.querySelector(".plank")
+const area = document.querySelector(".area")
 
-const leftWeightElement = document.querySelector(".left-weight");
-const nextWeightElement = document.querySelector(".next-weight");
-const rightWeightElement = document.querySelector(".right-weight");
-const tiltAngleElement = document.querySelector(".tilt-angle");
-const resetButton = document.querySelector(".reset-btn");
-const ballInfoElement = document.querySelector(".ball-info-box");
+const leftWeightElement = document.querySelector(".left-weight")
+const nextWeightElement = document.querySelector(".next-weight")
+const rightWeightElement = document.querySelector(".right-weight")
+const tiltAngleElement = document.querySelector(".tilt-angle")
+const resetButton = document.querySelector(".reset-btn")
+const ballInfoElement = document.querySelector(".ball-info-box")
 
 const colors = {
     1: "#e86673",
@@ -20,228 +19,215 @@ const colors = {
     8: "#d44a98",
     9: "#ff4bd9",
     10: "#e0a43b"
-};
+}
 
-let objects = [];
-const minBallSize = 18;
-const maxBallSize = 60;
+let balls = []
+const minBallSize = 18
+const maxBallSize = 60
 
-
-let nextBallWeight = Math.floor(Math.random() * 10) + 1;
-nextWeightElement.textContent = `${nextBallWeight} kg`;
-
-
-window.addEventListener("resize", () => {
-    updateClickAreaBox();
-});
+let nextBallWeight = Math.floor(Math.random() * 10) + 1
+nextWeightElement.textContent = nextBallWeight + " kg"
 
 
-// click area
-clickArea.addEventListener("click", (e) => {
-    const values = plank.getBoundingClientRect();
+// click plank
+plank.addEventListener("click", (e) => {
 
-    const clickX = e.clientX - values.left;
-    const distance = clickX - values.width / 2;
+    const values = plank.getBoundingClientRect()
+    const visualX = e.clientX - values.left
 
-    const weight = nextBallWeight;
-    const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
+    const ratio = visualX / values.width
 
-    const ball = document.createElement("div");
-    ball.className = "ball ball--animation";
-    ball.textContent = weight;
+    const plankWidth = plank.offsetWidth
+    const xOnPlank = ratio * plankWidth
+    const distanceFromCenter = xOnPlank - plankWidth / 2
 
-    ball.style.width = `${ballSize}px`;
-    ball.style.height = `${ballSize}px`;
-    ball.style.left = `${clickX - ballSize / 2}px`;
-    ball.style.background = colors[weight];
+    const weight = nextBallWeight
+    const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize)
 
-    ball.addEventListener("animationend", () => {
-        ball.classList.remove("ball--animation");
-    });
+    const ballEl = document.createElement("div")
+    ballEl.className = "ball ball--animation"
+    ballEl.textContent = weight
 
-    plank.appendChild(ball);
+    ballEl.style.width = ballSize + "px"
+    ballEl.style.height = ballSize + "px"
+    ballEl.style.left = (xOnPlank - ballSize / 2) + "px"
+    ballEl.style.background = colors[weight]
 
-    objects.push({
-        x: clickX,
-        distance,
-        weight
-    });
+    ballEl.addEventListener("animationend", () => {
+        ballEl.classList.remove("ball--animation")
+    })
 
-    nextBallWeight = Math.floor(Math.random() * 10) + 1;
-    nextWeightElement.textContent = `${nextBallWeight} kg`;
+    plank.appendChild(ballEl)
 
-    localStorage.setItem("objects", JSON.stringify(objects));
-    localStorage.setItem("next-weight", nextBallWeight);
+    balls.push({
+        x: xOnPlank,
+        distance: distanceFromCenter,
+        weight: weight
+    })
 
-    updatePlankRotation();
-    ballInfoAdd(objects);
-});
+    nextBallWeight = Math.floor(Math.random() * 10) + 1
+    nextWeightElement.textContent = nextBallWeight + " kg"
 
 
+    localStorage.setItem("objects", JSON.stringify(balls))
+    localStorage.setItem("next-weight", String(nextBallWeight))
 
-// plank rotation update
-const updatePlankRotation = () => {
-    let leftTorque = 0;
-    let rightTorque = 0;
-    let leftWeight = 0;
-    let rightWeight = 0;
+    recalculateBalance()
+    updateBallInfoList(balls)
+})
 
-    objects.forEach(object => {
-        const torque = object.weight * Math.abs(object.distance);
 
-        if (object.distance < 0) {
-            leftTorque += torque;
-            leftWeight += object.weight;
+// plank balance
+const recalculateBalance = () => {
+    let leftTorque = 0
+    let rightTorque = 0
+    let leftWeight = 0
+    let rightWeight = 0
+
+    balls.forEach((item) => {
+        const torque = item.weight * Math.abs(item.distance)
+
+        if (item.distance < 0) {
+            leftTorque += torque
+            leftWeight += item.weight
         } else {
-            rightTorque += torque;
-            rightWeight += object.weight;
+            rightTorque += torque
+            rightWeight += item.weight
         }
-    });
+    })
 
-    let angle = (rightTorque - leftTorque) / 50;
-    angle = Math.max(-30, Math.min(30, angle));
+    let angle = (rightTorque - leftTorque) / 50
+    if (angle > 30) angle = 30
+    if (angle < -30) angle = -30
 
-    plank.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+    plank.style.transform = "translateX(-50%) rotate(" + angle + "deg)"
 
-    updateClickAreaBox();
-
-    leftWeightElement.textContent = `${leftWeight} kg`;
-    rightWeightElement.textContent = `${rightWeight} kg`;
-
-    tiltAngleElement.textContent = `${angle.toFixed(1)}°`;
-};
+    leftWeightElement.textContent = leftWeight + " kg"
+    rightWeightElement.textContent = rightWeight + " kg"
+    tiltAngleElement.textContent = angle.toFixed(1) + "°"
+}
 
 
-// click area box update
-const updateClickAreaBox = () => {
-    const areaValues = area.getBoundingClientRect();
-    const plankValues = plank.getBoundingClientRect();
-
-    const left = plankValues.left - areaValues.left;
-    const top = 0;
-    const width = plankValues.width;
-    const height = plankValues.top - areaValues.top;
-
-    clickArea.style.left = left + "px";
-    clickArea.style.top = top + "px";
-    clickArea.style.width = width + "px";
-    clickArea.style.height = height + "px";
-};
-
-
-// window upload
+// load window
 window.addEventListener("load", () => {
-    updateClickAreaBox();
+    let storedObjects = null
+    let storedNextWeigt = null
 
-    const savedObjects = JSON.parse(localStorage.getItem("objects"));
-    const savedNext = localStorage.getItem("next-weight");
+    storedObjects = JSON.parse(localStorage.getItem("objects"))
+    storedNextWeigt = localStorage.getItem("next-weight")
 
-    if (savedObjects && Array.isArray(savedObjects)) {
-        objects = savedObjects;
+    if (storedObjects && Array.isArray(storedObjects)) {
+        balls = storedObjects
 
-        objects.forEach((object) => {
-            const ballSize = minBallSize + ((object.weight - 1) / 9) * (maxBallSize - minBallSize);
+        balls.forEach((item) => {
+            const ballSize = minBallSize + ((item.weight - 1) / 9) * (maxBallSize - minBallSize)
 
-            const ball = document.createElement("div");
-            ball.className = "ball";
-            ball.textContent = object.weight;
+            const ball = document.createElement("div")
+            ball.className = "ball"
+            ball.textContent = item.weight
 
-            ball.style.width = `${ballSize}px`;
-            ball.style.height = `${ballSize}px`;
-            ball.style.left = `${object.x - ballSize / 2}px`;
-            ball.style.background = colors[object.weight];
+            ball.style.width = ballSize + "px"
+            ball.style.height = ballSize + "px"
+            ball.style.left = (item.x - ballSize / 2) + "px"
+            ball.style.background = colors[item.weight]
 
-            plank.appendChild(ball);
-        });
+            plank.appendChild(ball)
+        })
 
-        updatePlankRotation();
-        ballInfoAdd(objects);
+        recalculateBalance()
+        updateBallInfoList(balls)
     }
 
-    if (savedNext) {
-        nextBallWeight = Number(savedNext);
-        nextWeightElement.textContent = `${nextBallWeight} kg`;
+    if (storedNextWeigt) {
+        nextBallWeight = Number(storedNextWeigt)
+        nextWeightElement.textContent = nextBallWeight + " kg"
     }
-});
+})
 
 
 // preview ball
-let previewBall = null;
-
-const getBallSizeForWeight = (weight) => minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize);
+let previewBall = null
 
 const updatePreviewBall = (clientX) => {
-    const clickValues = clickArea.getBoundingClientRect();
-    const plankWidth = plank.offsetWidth;
+    const values = plank.getBoundingClientRect()
 
-    let relativeX = clientX - clickValues.left;
-    relativeX = Math.max(0, Math.min(clickValues.width, relativeX));
+    let visualX = clientX - values.left
+    if (visualX < 0) visualX = 0
+    if (visualX > values.width) visualX = values.width
 
-    const weight = nextBallWeight;
-    const ballSize = getBallSizeForWeight(weight);
+    const ratio = values.width ? (visualX / values.width) : 0
+    const plankWidth = plank.offsetWidth || values.width
+    const xOnPlank = ratio * plankWidth
 
-    const xOnPlank = (relativeX / clickValues.width) * plankWidth;
+    const weight = nextBallWeight
+    const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize)
 
     if (!previewBall) {
-        previewBall = document.createElement("div");
-        previewBall.className = "ball preview-ball";
-        plank.appendChild(previewBall);
+        previewBall = document.createElement("div")
+        previewBall.className = "ball preview-ball"
+        plank.appendChild(previewBall)
     }
 
-    previewBall.textContent = weight;
-    previewBall.style.width = `${ballSize}px`;
-    previewBall.style.height = `${ballSize}px`;
-    previewBall.style.left = `${xOnPlank - ballSize / 2}px`;
-    previewBall.style.background = colors[weight];
-};
+    previewBall.textContent = weight
+    previewBall.style.width = ballSize + "px"
+    previewBall.style.height = ballSize + "px"
+    previewBall.style.left = (xOnPlank - ballSize / 2) + "px"
+    previewBall.style.background = colors[weight]
+}
 
-clickArea.addEventListener("mousemove", (e) => updatePreviewBall(e.clientX));
-clickArea.addEventListener("mouseleave", () => {
-    if (previewBall) previewBall.remove(), previewBall = null;
-});
+plank.addEventListener("mousemove", (e) => {
+    updatePreviewBall(e.clientX)
+})
+
+plank.addEventListener("mouseleave", () => {
+    if (previewBall) {
+        previewBall.remove()
+        previewBall = null
+    }
+})
 
 
-// ball descriptions area
-const ballInfoAdd = (objects) => {
-    ballInfoElement.style.background = "#ffffff";
-    ballInfoElement.style.padding = "10px";
-    ballInfoElement.style.marginTop = "20px";
-    ballInfoElement.style.maxHeight = "100px";
-    ballInfoElement.style.overflowY = "auto";
+// ball info list
+const updateBallInfoList = (list) => {
+    ballInfoElement.style.background = "#ffffff"
+    ballInfoElement.style.padding = "10px"
+    ballInfoElement.style.marginTop = "20px"
+    ballInfoElement.style.maxHeight = "100px"
+    ballInfoElement.style.overflowY = "auto"
 
-    ballInfoElement.innerHTML = "";
+    ballInfoElement.innerHTML = ""
 
-    objects.forEach((object) => {
-        const infoBox = document.createElement("div");
-        infoBox.className = "ball-info-text";
+    list.forEach((item) => {
+        const row = document.createElement("div")
+        row.className = "ball-info-text"
 
-        const side = object.distance < 0 ? "left" : "right";
-        const fromCenter = Math.abs(object.distance);
+        const side = item.distance < 0 ? "left" : "right"
+        const fromCenter = Math.abs(item.distance).toFixed(2)
 
-        infoBox.textContent = `📦 ${object.weight} kg dropped on ${side} side at ${fromCenter.toFixed(2)}px`;
-        ballInfoElement.appendChild(infoBox);
-    });
-};
+        row.textContent = `📦 ${item.weight} kg droppd on ${side} side at ${fromCenter}px`
+        ballInfoElement.appendChild(row)
+    })
+}
 
 
 // reset button
 resetButton.addEventListener("click", () => {
-    objects = [];
+    balls = []
 
-    const balls = plank.querySelectorAll(".ball");
-    balls.forEach(ball => ball.remove());
+    const existingBalls = plank.querySelectorAll(".ball")
+    existingBalls.forEach((el) => el.remove())
 
-    plank.style.transform = `translateX(-50%) rotate(0deg)`;
-    leftWeightElement.textContent = "0 kg";
-    rightWeightElement.textContent = "0 kg";
-    tiltAngleElement.textContent = "0°";
+    plank.style.transform = "translateX(-50%) rotate(0deg)"
+    leftWeightElement.textContent = "0 kg"
+    rightWeightElement.textContent = "0 kg"
+    tiltAngleElement.textContent = "0°"
 
-    localStorage.removeItem("objects");
-    localStorage.removeItem("next-weight");
+    localStorage.removeItem("objects")
+    localStorage.removeItem("next-weight")
 
-    nextBallWeight = Math.floor(Math.random() * 10) + 1;
-    nextWeightElement.textContent = `${nextBallWeight} kg`;
+    nextBallWeight = Math.floor(Math.random() * 10) + 1
+    nextWeightElement.textContent = nextBallWeight + " kg"
 
-    ballInfoElement.innerHTML = "";
-    ballInfoElement.removeAttribute("style");
-});
+    ballInfoElement.innerHTML = ""
+    ballInfoElement.removeAttribute("style")
+})
