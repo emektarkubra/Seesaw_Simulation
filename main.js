@@ -31,6 +31,11 @@ let nextBallWeight = Math.floor(Math.random() * 10) + 1;
 nextWeightElement.textContent = `${nextBallWeight} kg`;
 
 
+window.addEventListener("resize", () => {
+    updateClickAreaBox();
+});
+
+
 // click area
 clickArea.addEventListener("click", (e) => {
     const values = plank.getBoundingClientRect();
