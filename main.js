@@ -215,7 +215,7 @@ resetButton.addEventListener("click", () => {
     balls = []
 
     const existingBalls = plank.querySelectorAll(".ball")
-    existingBalls.forEach((el) => el.remove())
+    existingBalls.forEach((ball) => ball.remove())
 
     plank.style.transform = "translateX(-50%) rotate(0deg)"
     leftWeightElement.textContent = "0 kg"
