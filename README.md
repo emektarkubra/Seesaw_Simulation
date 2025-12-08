@@ -135,8 +135,8 @@ to ensure long-term maintainability and clarity.
 
 The simulation was built within a single file using basic functions.
 
-**+ The project was prototyped quickly**
-** A modular structure, classes, or state management—which would be necessary for larger- cale projects were not implemented**
+- The project was prototyped quickly
+- A modular structure, classes, or state management which would be necessary for larger scale projects were not implemented**
 
 ---
 
