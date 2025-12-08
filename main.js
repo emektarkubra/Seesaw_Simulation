@@ -44,20 +44,20 @@ plank.addEventListener("click", (e) => {
     const weight = nextBallWeight
     const ballSize = minBallSize + ((weight - 1) / 9) * (maxBallSize - minBallSize)
 
-    const ballEl = document.createElement("div")
-    ballEl.className = "ball ball--animation"
-    ballEl.textContent = weight
+    const ball = document.createElement("div")
+    ball.className = "ball ball--animation"
+    ball.textContent = weight
 
-    ballEl.style.width = ballSize + "px"
-    ballEl.style.height = ballSize + "px"
-    ballEl.style.left = (xOnPlank - ballSize / 2) + "px"
-    ballEl.style.background = colors[weight]
+    ball.style.width = ballSize + "px"
+    ball.style.height = ballSize + "px"
+    ball.style.left = (xOnPlank - ballSize / 2) + "px"
+    ball.style.background = colors[weight]
 
-    ballEl.addEventListener("animationend", () => {
-        ballEl.classList.remove("ball--animation")
+    ball.addEventListener("animationend", () => {
+        ball.classList.remove("ball--animation")
     })
 
-    plank.appendChild(ballEl)
+    plank.appendChild(ball)
 
     balls.push({
         x: xOnPlank,
