@@ -15,13 +15,12 @@ I also added a main container to position and organize all UI elements cleanly.
 
 ---
 
-## 2. Adding the Plank, Pivot, and Click Area
+## 2. Adding the Plank, Pivot
 
 To build the core visual structure of the simulation, I created three essential HTML components:
 
 * **Plank (`.plank`)** — the seesaw board
 * **Pivot (`.pivot`)** — the triangular support beneath the plank
-* **Click Area (`.click-area`)** — an invisible interactive region where the user can drop balls
 
 These elements formed the foundation of the visual simulation.
 
@@ -53,9 +52,9 @@ This structure provided the logical backbone of the simulation.
 
 ## 5. Implementing Ball Placement on Click
 
-When the user clicks on the interactive area:
+When the user clicks on the plank:
 
-1. The click position relative to the plank is calculated
+1. The click position (on plank) is calculated
 2. A random weight is generated
 3. Ball size is determined based on weight
 4. A new ball is visually placed on the plank
@@ -82,7 +81,7 @@ This resulted in a simple but effective representation of seesaw physics.
 
 ## 7. Hover-Based Ball Preview
 
-I implemented a “preview ball” that appears when the user moves the cursor over the click area:
+I implemented a “preview ball” that appears when the user moves the cursor over the plank:
 
 * The preview updates according to cursor position
 * It uses the size and color of the next ball to be placed
@@ -134,15 +133,13 @@ to ensure long-term maintainability and clarity.
 
 # Trade-off
 
-### **The Click Area is recalculated every time the plank tilts**
-
-Each time the plank rotates, the clickable area is repositioned to match its new orientation.
-This approach works well, but it can cause small pixel-level shifts in certain cases.
-
 **Trade-off:**
 
-* The user can still click accurately
-* However, the area does not perfectly represent the plank’s true 3D tilt (a simplified 2D approximation)
+The simulation was built within a single file using basic functions.
+
+**+ The project was prototyped quickly**
+**– A modular structure, classes, or state management—which would be necessary for larger-scale projects—were not implemented**
+
 
 ---
 
@@ -151,10 +148,7 @@ This approach works well, but it can cause small pixel-level shifts in certain c
 During this project, AI was used **only as a supportive tool**, not for generating the core implementation. The main areas where AI assisted me were:
 
 * Helping simplify or rephrase explanations for the README
-* Providing guidance on CSS transform usage, such as:
-
-    transform: rotate() behavior
-    how rotation affects positioning
+* Providing torque calculations how it is work:
 
 ---
 
